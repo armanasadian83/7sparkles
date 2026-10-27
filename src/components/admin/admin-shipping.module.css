@@ -1,0 +1,80 @@
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 310px; align-items: start; gap: 22px; }
+.emptyLayout { grid-template-columns: minmax(0, 1fr); }
+.form { padding: 0 24px 24px; }
+.methodList { display: grid; gap: 18px; }
+.method { padding: 23px; background: #fcfbf8; border: 1px solid var(--admin-border); border-radius: 16px; min-width: 0; }
+.methodHeading { display: flex; align-items: center; gap: 13px; }
+.methodHeading > div { flex: 1; min-width: 0; }
+.methodHeading h3 { font-size: 17px; font-weight: 600; overflow-wrap: anywhere; }
+.methodHeading p { margin-top: 3px; color: var(--admin-muted); font-size: var(--text-small); }
+.methodIcon { display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; border-radius: 12px; background: #f0ede5; color: #9b865d; }
+.status { border-radius: 20px; background: #efeee9; padding: 3px 10px; font-size: var(--text-caption); color: var(--admin-muted); white-space: nowrap; }
+.activeStatus { color: #68765e; }
+.cancel { display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 30px; border: 1px solid #e5e0d5; border-radius: 9px; background: transparent; color: var(--admin-muted); cursor: pointer; }
+.cancel:hover { background: #f1eee6; color: #4e554a; }
+.cancel:focus-visible { outline: 2px solid #a58b58; outline-offset: 3px; }
+.fields { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin-top: 25px; }
+.fields > label { min-width: 0; }
+.feeInput { position: relative; display: block; width: 100%; }
+.feeField .feeInput input { width: 100%; padding-inline-end: 65px; font-variant-numeric: tabular-nums; }
+.feeField .feeInput input:disabled { opacity: .55; cursor: default; }
+.feeInput > span { position: absolute; inset-inline-end: 15px; top: 50%; transform: translateY(-50%); color: var(--admin-muted); font-size: var(--text-small); pointer-events: none; }
+.paymentMode { border: 0; padding: 0; margin: 22px 0 0; min-width: 0; }
+.paymentMode legend { padding: 0; font-size: var(--text-small); font-weight: 500; }
+.paymentOptions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin-top: 11px; }
+.paymentOption { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 11px 13px; border: 1px solid #e2dfd5; border-radius: 10px; background: #fff; color: var(--admin-muted); font-size: var(--text-small); cursor: pointer; }
+.paymentOption:has(input:checked) { border-color: #929d83; color: #454e3d; }
+.paymentOption:has(input:disabled) { cursor: progress; opacity: .6; }
+.paymentOption input { width: 14px; height: 14px; margin: 0; flex: 0 0 14px; accent-color: #68765e; }
+.paymentOption input:focus-visible { outline: 2px solid #a58b58; outline-offset: 3px; }
+.paymentHint { color: var(--admin-muted); font-size: var(--text-small); line-height: 1.9; margin-top: 9px; }
+.switches { display: block; }
+.switches :global(.admin-switch-row) { min-width: 0; }
+.switches :global(.admin-switch-row) > span:first-child { min-width: 0; }
+.switches :global(.admin-switch) { flex-shrink: 0; }
+.addButton { margin-top: 18px; }
+.actions { padding-top: 21px; margin-top: 22px; border-top: 1px solid var(--admin-border); }
+.notice { margin-top: 18px; padding: 13px 16px; border: 1px solid #eadfca; border-radius: 10px; background: #faf6ee; color: #8a744f; font-size: var(--text-small); }
+.emptyState { display: grid; justify-items: center; text-align: center; padding: 56px 20px 62px; border: 1px dashed #ded9ce; border-radius: 17px; background: #fdfcf9; }
+.emptyIcon { display: grid; place-items: center; width: 58px; height: 58px; border: 1px solid #e8e2d6; border-radius: 18px; background: #f6f3ed; color: #a48d65; margin-bottom: 21px; }
+.emptyIcon svg { width: 27px; height: 27px; }
+.emptyState h3 { font-size: 18px; font-weight: 500; }
+.emptyState p { max-width: 340px; margin: 10px 0 25px; color: var(--admin-muted); font-size: var(--text-small); line-height: 2; }
+.preview { border: 1px solid var(--admin-border); border-radius: 16px; padding: 21px; background: #fff; min-width: 0; }
+.previewHeading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.previewHeading h2 { font-size: 16px; }
+.previewHeading svg { width: 17px; height: 17px; color: #ad925c; }
+.previewIntro { color: var(--admin-muted); font-size: var(--text-small); margin-block: 8px 22px; }
+.previewOption { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; padding: 14px 12px; border: 1px solid #e8e4da; border-radius: 12px; margin-bottom: 10px; font-size: var(--text-small); }
+.previewSelected { background: #f6f5ef; border-color: #c7ccbc; }
+.previewOption strong { font-size: var(--text-small); font-weight: 500; overflow-wrap: anywhere; }
+.previewOption > span:last-child { margin-inline-start: auto; color: var(--admin-muted); font-size: var(--text-small); }
+.radio { display: inline-block; width: 13px; height: 13px; flex: 0 0 13px; border: 1px solid #93a084; border-radius: 50%; }
+.previewSelected .radio { background: radial-gradient(circle, #78896b 0 3px, transparent 3.5px); }
+.previewNote { color: var(--admin-muted); font-size: var(--text-small); line-height: 2; margin-top: 20px; }
+.emptyPreview { color: var(--admin-muted); font-size: var(--text-small); padding-block: 12px; }
+@media (max-width: 1200px) { .layout { grid-template-columns: minmax(0, 1fr); gap: 18px; } .preview { max-width: 500px; width: 100%; } }
+@media (max-width: 680px) { .form { padding: 0 16px 18px; } .method { padding: 17px 14px; } .methodHeading { gap: 8px; } .methodHeading h3 { font-size: 15px; } .methodHeading p { font-size: var(--text-small); } .methodIcon { flex-basis: 32px; width: 32px; height: 32px; border-radius: 9px; } .methodIcon svg { width: 19px; height: 19px; } .status { font-size: var(--text-caption); padding: 3px 8px; } .fields { grid-template-columns: minmax(0, 1fr); gap: 18px; } .paymentOptions { grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); } .paymentOption { padding: 11px 9px; gap: 7px; font-size: var(--text-small); } .preview { max-width: none; padding: 18px; } .notice { font-size: var(--text-small); } .emptyState { padding: 40px 16px; } .emptyState h3 { font-size: 16px; } .emptyState p { font-size: var(--text-small); } }
+
+:global(html[data-theme="dark"]) .method,
+:global(html[data-theme="dark"]) .preview { background: var(--panel); }
+:global(html[data-theme="dark"]) .methodIcon,
+:global(html[data-theme="dark"]) .emptyIcon { background: #332f20; border-color: #544c36; color: var(--gold); }
+:global(html[data-theme="dark"]) .status { background: #2f382a; color: #adb9a1; }
+:global(html[data-theme="dark"]) .activeStatus { color: #d0e2be; }
+:global(html[data-theme="dark"]) .cancel { border-color: var(--line); color: #bac7ae; }
+:global(html[data-theme="dark"]) .cancel:hover { background: #34412c; color: #edf4e7; }
+:global(html[data-theme="dark"]) .feeInput > span { color: var(--muted); }
+:global(html[data-theme="dark"]) .paymentOption { background: var(--field); border-color: var(--line); color: #bfccb3; }
+:global(html[data-theme="dark"]) .paymentOption:has(input:checked) { background: #2c3926; border-color: #91a27a; color: #e3ecd9; }
+:global(html[data-theme="dark"]) .paymentOption input { accent-color: #b6c89f; }
+:global(html[data-theme="dark"]) .notice { background: #302b1e; border-color: #5f5133; color: #d8bf8c; }
+:global(html[data-theme="dark"]) .emptyState { background: #182119; border-color: #424b39; }
+:global(html[data-theme="dark"]) .previewHeading svg { color: var(--gold); }
+:global(html[data-theme="dark"]) :is(.previewIntro, .previewNote) { color: var(--muted); }
+:global(html[data-theme="dark"]) .previewOption { border-color: var(--line); }
+:global(html[data-theme="dark"]) .previewSelected { background: #2b3725; border-color: #687b52; }
+:global(html[data-theme="dark"]) .previewOption > span:last-child { color: #c3d1b6; }
+:global(html[data-theme="dark"]) .radio { border-color: #adbf95; }
+:global(html[data-theme="dark"]) .previewSelected .radio { background: radial-gradient(circle, #bbcea4 0 3px, transparent 3.5px); }
+:global(html[data-theme="dark"]) .emptyPreview { color: #d1c49e; }

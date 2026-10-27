@@ -1,0 +1,24 @@
+:global(html[data-theme="dark"]) .fieldset legend { color: var(--muted); }
+:global(html[data-theme="dark"]) .method { border-color: var(--line); background: var(--field); color: var(--ink); }
+:global(html[data-theme="dark"]) .method[data-selected="true"] { border-color: #8ca47a; background: #2b3925; }
+:global(html[data-theme="dark"]) .method:hover { border-color: #a8b997; }
+:global(html[data-theme="dark"]) .method:focus-within { outline-color: var(--gold); }
+:global(html[data-theme="dark"]) .method input { accent-color: #adbf98; }
+:global(html[data-theme="dark"]) .label small,
+:global(html[data-theme="dark"]) .price { color: #b1bca7; }
+:global(html[data-theme="dark"]) .unavailable { border-color: var(--line); background: var(--panel-raised); color: var(--muted); }
+.fieldset { display: grid; gap: 10px; min-width: 0; margin: 25px 0 0; padding: 0; border: 0; }
+.fieldset legend { padding: 0 0 10px; color: #697162; font-size: var(--text-small); font-weight: 500; }
+.method { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-width: 0; min-height: 58px; padding: 14px 13px; border: 1px solid #e7e0d5; border-radius: 16px; background: #fff; color: #30372e; cursor: pointer; transition: background 180ms ease, border-color 180ms ease; }
+.method[data-selected="true"] { border-color: #75816b; background: #e6ebde; }
+.method:hover { border-color: #849078; }
+.method:focus-within { outline: 2px solid #647658; outline-offset: 3px; }
+.method input { width: 15px; height: 15px; flex: 0 0 15px; margin: 0; accent-color: #617256; }
+.method > span:nth-child(2) { min-width: 0; font-size: var(--text-caption); font-weight: 500; }
+.label { display: grid; flex: 1; min-width: 0; gap: 3px; }
+.label strong { font-size: var(--text-small); font-weight: 500; overflow-wrap: anywhere; }
+.label small { color: var(--muted); font-size: var(--text-small); font-weight: 400; line-height: 1.8; }
+.price { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px; max-width: 100%; margin-inline-start: auto; color: var(--muted); font-size: var(--text-caption); }
+.price small { font-size: var(--text-caption); }
+.fieldset:disabled .method { cursor: wait; opacity: .65; }
+.unavailable { padding: 14px; border: 1px solid #e7e0d5; border-radius: 15px; background: #f6f4ee; color: #807c70; font-size: var(--text-small); line-height: 1.9; }

@@ -1,0 +1,18 @@
+.section { margin-block: 112px; scroll-margin-top: 100px; }
+.headingRow { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 36px; }
+.headingRow > div { min-width: 0; }
+.heading { display: flex; align-items: center; gap: 15px; margin: 0; color: var(--ink); font-size: clamp(27px, 2.65vw, 39px); font-weight: 650; line-height: 1.65; letter-spacing: -.8px; }
+.heading > svg { flex: 0 0 25px; width: 25px; height: 25px; color: var(--gold); }
+.lead { margin: 11px 0 0; max-width: 660px; color: var(--muted); font-size: 15px; line-height: 2; }
+.textLink { display: inline-flex; align-items: center; justify-content: center; gap: 13px; width: fit-content; flex-shrink: 0; padding: 7px 0; border-bottom: 1px solid color-mix(in srgb, var(--sage) 45%, transparent); color: var(--sage); font-size: 14px; line-height: 1.8; }
+.textLink svg { flex-shrink: 0; }
+.textLink:hover { color: var(--gold); border-color: var(--gold); }
+.primary { display: inline-flex; justify-content: center; align-items: center; gap: 27px; min-height: 50px; width: fit-content; max-width: 100%; padding: 12px 24px; border: 1px solid transparent; border-radius: 12px; background: var(--sage); color: var(--on-accent); font-size: 14px; font-weight: 550; line-height: 1.8; text-align: center; transition: box-shadow .2s, transform .2s; }
+.primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px #30363012; }
+.primary svg { flex-shrink: 0; }
+.photo { position: relative; min-width: 0; overflow: hidden; border-radius: 26px; background: var(--surface); }
+.photo > img { object-fit: cover; }
+.section :is(a,button,summary):focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
+@media (max-width: 960px) { .section { margin-block: 82px; } .heading { font-size: 30px; } .lead { font-size: 14px; } }
+@media (max-width: 600px) { .section { margin-block: 62px; scroll-margin-top: 80px; } .headingRow { align-items: flex-start; flex-direction: column; gap: 14px; margin-bottom: 25px; } .heading { font-size: 27px; gap: 10px; letter-spacing: -.5px; } .heading > svg { flex-basis: 21px; width: 21px; height: 21px; } .lead { font-size: 14px; line-height: 2; margin-top: 10px; } .textLink { font-size: var(--text-caption); } .primary { font-size: var(--text-caption); padding-inline: 20px; gap: 20px; } .photo { border-radius: 20px; } }
+@media (prefers-reduced-motion: reduce) { .primary { transition: none; } .primary:hover { transform: none; } }

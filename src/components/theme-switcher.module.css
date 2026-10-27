@@ -1,0 +1,9 @@
+.control { flex: 0 0 auto; display: inline-flex; vertical-align: middle; }
+.trigger { display: inline-grid; place-items: center; flex: 0 0 34px; width: 34px; height: 36px; padding: 7px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: var(--paper); cursor: pointer; transition: border-color .15s, background .15s; }
+.trigger:hover { background: var(--surface); border-color: var(--gold); }
+.trigger > svg { grid-area: 1 / 1; }
+.sunIcon { display: none; }
+.moonIcon { display: block; }
+:global(html[data-theme="dark"]) .trigger .sunIcon { display: block; }
+:global(html[data-theme="dark"]) .trigger .moonIcon { display: none; }
+@media (prefers-reduced-motion: reduce) { .trigger { transition: none; } }

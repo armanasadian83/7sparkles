@@ -1,0 +1,238 @@
+:global(html[data-theme="dark"]) .avatar,
+:global(html[data-theme="dark"]) .symbol { border-color: #485a3d; background: #2b3825; color: #c2d2b0; }
+:global(html[data-theme="dark"]) .details,
+:global(html[data-theme="dark"]) .actions button { background: var(--field); }
+:global(html[data-theme="dark"]) .actions button:hover { border-color: #778f65; background: var(--panel-raised); }
+:global(html[data-theme="dark"]) .badge { background: #3b3221; color: #e1c18a; }
+.content {
+  direction: rtl;
+  line-height: 1.9;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-block: 4px 25px;
+}
+
+.avatar,
+.symbol {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  color: var(--sage);
+  background: #e8ecdf;
+  border: 1px solid #dfe5d6;
+  border-radius: 50%;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+}
+
+.identity h3 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.identity p {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: var(--text-small);
+}
+
+.details {
+  margin: 0 0 23px;
+  padding: 8px 19px;
+  background: #fff9;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.details > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 13px;
+}
+
+.details > div + div {
+  border-top: 1px solid var(--line);
+}
+
+.details dt {
+  color: var(--muted);
+  font-size: var(--text-caption);
+}
+
+.details dd {
+  margin: 0;
+  font-size: 15px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.actions button {
+  display: flex;
+  min-height: 62px;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #fff9;
+  font-size: var(--text-caption);
+  text-align: start;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.actions button > svg {
+  flex-shrink: 0;
+  color: var(--sage);
+}
+
+.actions button > svg:last-child {
+  margin-inline-start: auto;
+  color: var(--gold);
+}
+
+.actions button:hover {
+  border-color: #cbd3c1;
+  background: #f0f3eb;
+}
+
+.note {
+  margin-top: 19px;
+  color: var(--muted);
+  font-size: var(--text-small);
+  line-height: 2;
+}
+
+.empty {
+  display: flex;
+  min-height: 320px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 8px 8px 20px;
+  text-align: center;
+}
+
+.symbol {
+  width: 76px;
+  height: 76px;
+  margin-bottom: 5px;
+}
+
+.empty h3 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.empty > p {
+  max-width: 440px;
+  color: var(--muted);
+  font-size: var(--text-small);
+  line-height: 2.1;
+}
+
+.empty :global(.button) {
+  min-height: 48px;
+  margin-top: 5px;
+  font-size: var(--text-small);
+}
+
+.badge {
+  padding: 4px 13px;
+  border-radius: 100px;
+  background: #eee6d6;
+  color: #94784d;
+  font-size: var(--text-caption);
+}
+
+.textButton,
+.inlineActions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border: 0;
+  background: transparent;
+  color: var(--sage);
+  font-size: var(--text-caption);
+  text-underline-offset: 5px;
+}
+
+.textButton:hover,
+.inlineActions button:hover {
+  text-decoration: underline;
+}
+
+.inlineActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 28px;
+  margin-top: 5px;
+}
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 16px;
+}
+
+@media (max-width: 480px) {
+  .identity {
+    gap: 12px;
+  }
+
+  .identity h3 {
+    font-size: 16px;
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .details {
+    padding-inline: 13px;
+  }
+
+  .details > div {
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .actions button {
+    min-height: 54px;
+  }
+
+  .empty {
+    padding-inline: 0;
+  }
+
+  .empty h3 {
+    font-size: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .actions button {
+    transition: none;
+  }
+}

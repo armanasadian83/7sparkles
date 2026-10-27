@@ -1,0 +1,25 @@
+:root {
+  color-scheme: light;
+  --panel: #fff;
+  --panel-raised: #fffdf9;
+  --field: #fffefb;
+  --on-accent: #fffefa;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #111713;
+  --surface: #1b241e;
+  --ink: #e9eee5;
+  --muted: #b0bcaa;
+  --gold: #d4b77d;
+  --gold-ink: #d4b77d;
+  --sage: #a2b292;
+  --line: #354033;
+  --panel: #1a221d;
+  --panel-raised: #222d25;
+  --field: #151d18;
+  --on-accent: #111910;
+}
+html[data-theme="dark"] ::selection { color: #f4efdf; background: #5c6142; }
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder { color: #8e9a88; opacity: 1; }

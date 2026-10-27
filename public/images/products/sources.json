@@ -1,0 +1,54 @@
+{
+  "retrieved": "2026-10-20",
+  "note": "Public product packshots downloaded for the Seven Sparkles landing-page prototype. Product names and prices for the reference SKUs come from the user's supplied product screenshots. Images retain original packaging and have not been edited locally. Retailer-supplied files are not guaranteed to be unretouched photographs.",
+  "assets": [
+    {
+      "file": "dr-geno-trx-complex.png",
+      "product": "Dr.GENO T.R.X. Complex",
+      "priceTomanFromUserReference": 11600000,
+      "page": "https://fillerx.com/products/dr-geno-t-r-x-complex",
+      "image": "https://fillerx.com/cdn/shop/files/dr-geno-t-r-x-complex-c-l-medisys-default-title-skincare-37471948210383.png?v=1787674941&width=1000",
+      "sourceType": "retailer"
+    },
+    {
+      "file": "dr-geno-post-recovery.webp",
+      "product": "Dr.GENO P.O.S.T Recovery",
+      "priceTomanFromUserReference": 4950000,
+      "page": "https://raboteb.com/brands/dr-geno/",
+      "image": "https://raboteb.com/wp-content/uploads/2026/05/ChatGPT-Image-May-24-2026-05_14_42-PM-2-700x700.webp",
+      "sourceType": "retailer; matches supplied reference"
+    },
+    {
+      "file": "dr-geno-ac-complex.webp",
+      "product": "Dr.GENO A.C Complex",
+      "priceTomanFromUserReference": 9400000,
+      "page": "https://raboteb.com/brands/dr-geno/",
+      "image": "https://raboteb.com/wp-content/uploads/2026/05/ChatGPT-Image-May-24-2026-05_41_41-PM-1-700x700.webp",
+      "sourceType": "retailer; matches supplied reference"
+    },
+    {
+      "file": "novoselix-cx2.webp",
+      "product": "Novoselix Soothing Hydrating CX2",
+      "priceTomanFromUserReference": 2400000,
+      "page": "https://raboteb.com/brands/novoselix/",
+      "image": "https://raboteb.com/wp-content/uploads/2026/06/2959d6f5-90e7-438f-a219-10cd73a381e4-1-1-700x700.webp",
+      "sourceType": "retailer; matches supplied reference"
+    },
+    {
+      "file": "novoselix-exo-cell.webp",
+      "product": "Novoselix EXO-CELL VS2",
+      "priceTomanFromUserReference": 4800000,
+      "page": "https://raboteb.com/product-item/novoselix-vs2/",
+      "image": "https://raboteb.com/wp-content/uploads/2026/06/vs2-700x700.webp",
+      "sourceType": "retailer; matches supplied reference"
+    },
+    {
+      "file": "genosys-hydro-soothing.png",
+      "product": "GENOSYS Intensive Hydro Soothing Cream",
+      "priceTomanFromUserReference": null,
+      "page": "https://genosys.ie/products/intensive-hydro-soothing-cream",
+      "image": "https://genosys.ie/cdn/shop/files/34_4fefc16d-b7d0-4ef3-9fd8-96d618896e8f.png?v=1769775459&width=1000",
+      "sourceType": "official regional brand website"
+    }
+  ]
+}

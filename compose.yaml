@@ -1,0 +1,21 @@
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      APP_URL: ${APP_URL:?Set APP_URL to the public HTTPS origin}
+      ADMIN_SETUP_KEY: ${ADMIN_SETUP_KEY:?Set a random ADMIN_SETUP_KEY}
+      DATA_DIR: /app/data
+    volumes:
+      - shop-data:/app/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health', {signal: AbortSignal.timeout(4000)}).then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+volumes:
+  shop-data:

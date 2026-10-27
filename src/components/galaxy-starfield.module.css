@@ -1,0 +1,39 @@
+.field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  contain: layout paint;
+}
+.particle {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  pointer-events: none;
+}
+.particle i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #f2f5ff;
+  box-shadow: 0 0 6px 1px #cbd3ffb3, 0 0 13px 2px #aabaff4d;
+  opacity: var(--opacity);
+  transform: scale(1);
+  transition: opacity 600ms ease, transform 700ms ease, background-color 600ms ease, box-shadow 700ms ease;
+}
+.particle:nth-child(3n) i { background: #ffe9b8; box-shadow: 0 0 7px 1px #ffdc8fb3, 0 0 13px 2px #e6be6e4d; }
+.particle[data-active="true"] i {
+  background: #fff2c8;
+  box-shadow: 0 0 7px 2px #fff2c8b3, 0 0 20px 5px #b09bff66;
+  opacity: 1;
+  transform: scale(1.65);
+}
+.particle:nth-child(3n)[data-active="true"] i { background: #c7efff; box-shadow: 0 0 7px 2px #c7efffc2, 0 0 20px 5px #8dbaff66; }
+@media (max-width: 600px) {
+  .particle:nth-child(even) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .particle, .particle i { transform: none !important; transition: none; }
+}

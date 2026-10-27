@@ -1,0 +1,53 @@
+.discovery { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 54px; align-items: stretch; }
+.concerns { display: flex; flex-direction: column; min-width: 0; }
+.concern { display: grid; grid-template-columns: 60px minmax(0, 1fr) 24px; align-items: center; gap: 18px; flex: 1; width: 100%; padding: 25px 0; border-top: 1px solid var(--line); color: var(--ink); text-align: right; transition: color .2s; }
+.concern:last-child { border-bottom: 1px solid var(--line); }
+.concern[aria-pressed="true"] { color: var(--sage); }
+.concernIcon { display: grid; place-items: center; width: 60px; height: 60px; border: 1px solid var(--line); border-radius: 50%; transition: background .2s, border-color .2s; }
+.concern[aria-pressed="true"] .concernIcon { background: color-mix(in srgb, var(--sage) 11%, var(--paper)); border-color: transparent; }
+.concernIcon > svg { width: 29px; height: 29px; }
+.concernCopy { display: grid; gap: 8px; min-width: 0; }
+.concernCopy strong { font-size: 19px; line-height: 1.7; font-weight: 550; }
+.concernCopy > span { color: var(--muted); font-size: var(--text-small); line-height: 1.9; }
+.concernArrow { transition: transform .2s; }
+.concern:hover .concernArrow { transform: translateX(-4px); }
+.discoveryPhoto { min-height: 500px; }
+.discoveryPhoto > img { object-position: center; animation: appear .3s ease both; }
+.photoCaption { position: absolute; inset: auto 18px 18px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 21px 24px; border: 1px solid #ffffff80; border-radius: 16px; background: #fffdf9ed; color: #303630; backdrop-filter: blur(10px); }
+.photoCaption > div { min-width: 0; }
+.photoCaption h3 { font-size: 19px; font-weight: 600; }
+.photoCaption p { margin-top: 5px; color: var(--muted); font-size: var(--text-small); line-height: 1.9; }
+.photoCaption > a { display: inline-flex; gap: 13px; align-items: center; font-size: var(--text-caption); white-space: nowrap; padding-inline-start: 21px; border-inline-start: 1px solid #e4ded3; }
+.photoCaption > a:hover { color: #a78b5c; }
+.photoCaption > a svg { flex-shrink: 0; }
+.matchCount { display: block; margin-top: 6px; font-size: var(--text-caption); color: #626e5f; }
+.ritual { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 68px; align-items: center; }
+.ritualPhoto { min-height: 590px; height: 100%; max-height: 710px; }
+.ritualPhoto > img { object-position: center; }
+.ritualCaption { position: absolute; inset: auto 30px 27px; display: flex; align-items: center; gap: 12px; color: #303630; font-size: var(--text-caption); }
+.ritualCaption > span { width: 38px; height: 1px; background: #a78b5c; }
+.ritualContent { min-width: 0; }
+.ritualContent > button { width: 100%; }
+.ritualContent > div:first-child { margin-bottom: 22px; }
+.ritualContent h2 { font-size: clamp(27px, 2.45vw, 36px); }
+.routineTabs { display: inline-flex; padding: 3px; border: 1px solid var(--line); border-radius: 30px; margin-bottom: 14px; }
+.routineTabs > button { display: inline-flex; align-items: center; justify-content: center; gap: 11px; min-width: 137px; min-height: 43px; padding: 8px 20px; border-radius: 26px; color: var(--muted); font-size: 14px; transition: color .2s, background .2s; }
+.routineTabs > button > svg { width: 21px; height: 21px; }
+.routineTabs > button[aria-selected="true"] { color: var(--on-accent); background: var(--sage); }
+.steps ol { margin: 0 0 25px; padding: 0; list-style: none; }
+.steps li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 16px; align-items: start; padding-block: 27px; border-bottom: 1px solid var(--line); }
+.stepNumber { margin-top: 1px; color: var(--gold-ink); font-size: 26px; font-weight: 450; line-height: 1.6; }
+.stepCopy h3 { font-size: 19px; font-weight: 600; }
+.stepCopy p { margin-top: 5px; color: var(--muted); font-size: var(--text-small); line-height: 2; }
+.stepLink { display: inline-flex; align-self: center; align-items: center; gap: 12px; color: var(--gold-ink); font-size: var(--text-caption); white-space: nowrap; }
+.stepLink:hover { color: var(--sage); }
+.routineNote { margin-top: 13px; max-width: 490px; color: var(--muted); font-size: var(--text-small); line-height: 1.9; }
+:global(html[data-theme="dark"]) .photoCaption { border-color: #3d493c; background: #1a221def; color: var(--ink); }
+:global(html[data-theme="dark"]) .photoCaption p { color: var(--muted); }
+:global(html[data-theme="dark"]) .photoCaption > a { border-color: var(--line); }
+:global(html[data-theme="dark"]) .matchCount { color: var(--sage); }
+@keyframes appear { from { opacity: .4; } to { opacity: 1; } }
+@media (max-width: 1100px) { .discovery { gap: 30px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .concern { grid-template-columns: 49px minmax(0, 1fr) 20px; gap: 13px; padding-block: 20px; } .concernIcon { width: 49px; height: 49px; } .concernCopy strong { font-size: 17px; } .photoCaption { flex-direction: column; align-items: stretch; gap: 12px; padding: 19px; } .photoCaption > a { border-inline-start: 0; border-top: 1px solid #e4ded3; padding-inline-start: 0; padding-top: 10px; justify-content: space-between; } .ritual { gap: 35px; } .ritualPhoto { min-height: 610px; } .steps li { gap: 12px; grid-template-columns: 29px minmax(0, 1fr); } .stepLink { grid-column: 2; justify-self: start; margin-top: 3px; } .stepNumber { font-size: 23px; } }
+@media (max-width: 760px) { .discovery, .ritual { grid-template-columns: minmax(0, 1fr); gap: 27px; } .concern { grid-template-columns: 49px minmax(0, 1fr) 22px; padding-block: 18px; } .discoveryPhoto { min-height: 390px; order: -1; } .photoCaption { flex-direction: row; align-items: center; padding: 18px; } .photoCaption > a { padding-top: 0; border-top: 0; border-inline-start: 1px solid #e4ded3; padding-inline-start: 15px; font-size: var(--text-caption); white-space: normal; max-width: 150px; } .ritualPhoto { min-height: 0; height: auto; aspect-ratio: 1.2; max-height: none; } .ritual { gap: 30px; } .ritualContent h2 { font-size: 29px; } .steps li { padding-block: 22px; grid-template-columns: 33px minmax(0, 1fr); gap: 16px; } .stepNumber { font-size: 26px; } }
+@media (max-width: 480px) { .discoveryPhoto { min-height: 370px; } .photoCaption { inset: auto 12px 12px; flex-direction: column; align-items: stretch; gap: 12px; padding: 15px 17px; } .photoCaption h3 { font-size: 17px; } .photoCaption p { font-size: var(--text-small); } .photoCaption > a { max-width: none; border-inline-start: 0; padding-inline-start: 0; padding-top: 9px; border-top: 1px solid #e4ded3; justify-content: space-between; } .concernCopy strong { font-size: 17px; } .concernCopy > span { font-size: var(--text-small); } .concern { gap: 12px; grid-template-columns: 45px minmax(0, 1fr) 19px; } .concernIcon { width: 45px; height: 45px; } .concernIcon > svg { width: 25px; height: 25px; } .ritualCaption { inset: auto 22px 20px; font-size: var(--text-caption); } .routineTabs { display: flex; width: 100%; } .routineTabs > button { flex: 1; min-width: 0; font-size: var(--text-caption); padding-inline: 15px; } .steps li { grid-template-columns: 28px minmax(0, 1fr); gap: 12px; } .stepNumber { font-size: 23px; } .stepCopy h3 { font-size: 18px; } .stepCopy p { font-size: var(--text-small); } .ritualContent > button { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .discoveryPhoto > img { animation: none; } .concern, .concernIcon, .concernArrow, .routineTabs > button { transition: none; } .concern:hover .concernArrow { transform: none; } }

@@ -207,7 +207,11 @@ test('authenticated gift checkout belongs to the verified submitter and idempote
   const numbers = await helper('../src/lib/checkout.ts');
   const product = { id: 'p1', name: 'Snapshot serum', brand: 'Brand', slug: 'serum', price: 100, salePrice: 80, hasVariants: false, variants: [], stock: 5, trackStock: true, availability: 'in_stock', sku: 'OLD-SKU' };
   const settings = { acceptOrders: true, shippingMethods: [{ id: 'free', name: 'ارسال رایگان', fee: 0, free: true, postpaid: false, enabled: true }] };
-  const checkout = await helper('../src/server/checkout.ts', { 'server-only': {}, 'node:crypto': crypto, '../../server/database.mjs': { getDatabase }, '@/lib/checkout': numbers, '@/lib/cart': cart, '@/lib/shipping': shipping, './store': { readCatalog: () => ({ products: [product], settings }) }, './http': http });
+  db.prepare('INSERT INTO categories (id,name,name_key,created_at,updated_at) VALUES (?,?,?,?,?)').run('skin', 'Skin', 'skin', '2026-01-01', '2026-01-01');
+  db.prepare('INSERT INTO brands (id,name,name_key,created_at,updated_at) VALUES (?,?,?,?,?)').run('brand', 'Brand', 'brand', '2026-01-01', '2026-01-01');
+  db.prepare('INSERT INTO products (id,name,slug,brand,category,image,price,stock,status,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)').run('p1', product.name, product.slug, 'Brand', 'skin', '', 100, 5, 'active', '2026-01-01', '2026-01-01');
+  const inventory = await helper('../src/server/inventory.ts', { 'server-only': {}, '../../server/database.mjs': { getDatabase }, './http': http });
+  const checkout = await helper('../src/server/checkout.ts', { 'server-only': {}, 'node:crypto': crypto, '../../server/database.mjs': { getDatabase }, '@/lib/checkout': numbers, '@/lib/cart': cart, '@/lib/shipping': shipping, './store': { readCatalog: () => ({ products: [product], settings }) }, './http': http, './inventory': inventory });
   const input = checkout.validateCheckout({ idempotencyKey: 'gift-ownership-0000001', recipient: { name: 'Gift receiver B', phone: '09121234568' }, address: { province: 'تهران', city: 'تهران', address: 'خیابان آزمایش، پلاک ۱۲', postalCode: '1234567890' }, notes: '', shippingMethodId: 'free', items: [{ id: 'p1', quantity: 2 }], expectedTotal: 160 });
   const owner = { id: 'a', phone: '09121234567', name: 'Buyer A', signedInAt: '2026-10-26T00:00:00Z' };
   const receipt = checkout.createCheckoutOrder(input, owner);
@@ -224,4 +228,5 @@ test('authenticated gift checkout belongs to the verified submitter and idempote
   db.prepare('UPDATE customers SET active = 0 WHERE id = ?').run('a');
   throwsStatus(() => checkout.createCheckoutOrder({ ...input, idempotencyKey: 'disabled-ownership-00001' }, owner), 409);
   assert.equal(db.prepare('SELECT COUNT(*) AS n FROM orders').get().n, 2);
+  assert.equal(db.prepare('SELECT stock FROM products WHERE id = ?').get('p1').stock, 1);
 }));

@@ -26,6 +26,7 @@ npm run test:backend
 npm run test:analytics
 npm run test:customer-auth
 npm run test:payment-receipts
+npm run test:inventory
 ```
 
 Backend tests start their own local production server and disposable database. They verify migrations, access control, image validation, product metadata and variations, safe rich text, publishing, settings, session expiry, and persistence across a restart without changing the working database.
@@ -65,6 +66,8 @@ Upload up to 10 JPEG, PNG, or WebP images, each at most 5 MB. Images are normali
 A product with a name and unique slug can be saved as a draft before it has an image. Published products require an image; variable products also require all option combinations to be generated. Draft and archived products stay out of the public catalog. A sale price must be less than the regular price. An empty price means customers should inquire rather than add that item to the basket.
 
 Inventory can be tracked by quantity or managed using availability alone. Out-of-stock products cannot be added to the basket. Preorders and products without quantity tracking allow up to 99 units per basket item. For variable products, define up to three options and generate up to 50 combinations; each combination has its own SKU, price, quantity, and availability. A variant must be selected before it can be added to the basket, and its price takes precedence over the product-level price or discount. A variant's availability controls its own stock behavior; setting the entire product out of stock blocks every variant.
+
+Submitting an order immediately deducts its tracked product or selected-variant quantities in the same database transaction that saves the unpaid order. Retries never deduct twice, and competing checkouts cannot buy the same final units. Cancelling adds back exactly the quantities that order deducted, preserving later sales and manual stock changes; repeated cancellation has no additional effect. Reopening a cancelled order deducts those quantities again and fails without changing the order if stock is insufficient. Preorders and products without quantity tracking do not change numeric stock. Orders created before this inventory feature retain their original behavior: cancellation does not credit stock that was never deducted. Restore a missing original product or variant before changing an order's inventory-related status.
 
 `DATA_DIR` defaults to `./data` and contains `store.sqlite`, `uploads/`, `payment-receipts/`, and `backups/`. Set an absolute persistent path in production. Schema migrations are applied automatically. Back up the database with `npm run db:backup` and back up both uploaded-file directories separately. Deployment, backup, restore, and update instructions are in [DEPLOYMENT.md](DEPLOYMENT.md).
 

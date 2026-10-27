@@ -175,7 +175,7 @@ test('migrations preserve legacy products and backfill unique slugs even when ID
     assert.equal(row.track_stock, 1);
     assert.equal(row.has_variants, 0);
     assert.deepEqual(JSON.parse(row.images_json), [{ id: 'main', url: row.image, alt: row.name, caption: '' }]);
-    assert.deepEqual(migrated.prepare('SELECT version FROM schema_migrations ORDER BY version').all().map(row => row.version), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    assert.deepEqual(migrated.prepare('SELECT version FROM schema_migrations ORDER BY version').all().map(row => row.version), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     const order = migrated.prepare('SELECT * FROM orders WHERE id = ?').get('legacy-order');
     assert.equal(order.status, 'delivered');
     assert.equal(JSON.parse(order.items_json)[0].quantity, 2);
@@ -190,7 +190,7 @@ test('migrations preserve legacy products and backfill unique slugs even when ID
     assert.equal(migrated.prepare('SELECT COUNT(*) AS count FROM product_reviews').get().count, 0);
     assert.throws(() => migrated.prepare('UPDATE products SET slug = ? WHERE id = ?').run('product-legacy', 'legacy'), /UNIQUE constraint failed/);
     assert.equal(getDatabase(), migrated);
-    assert.equal(globalThis[Symbol.for('seven-sparkles.sqlite')].schemaVersion, 9);
+    assert.equal(globalThis[Symbol.for('seven-sparkles.sqlite')].schemaVersion, 10);
     assert.equal(row.deleted_at, null);
     assert.equal(row.restore_status, null);
     assert.deepEqual({ ...migrated.prepare('SELECT status, deleted_at, restore_status FROM products WHERE id = ?').get('legacy_') }, { status: 'archived', deleted_at: '2026-01-01', restore_status: 'draft' });
@@ -926,13 +926,23 @@ test('database-backed admin, catalog, uploads, access control, and restart persi
         assert.equal(details.notes, body.notes);
         assert.deepEqual([details.originalSubtotal, details.productSubtotal, details.discount, details.total], [500000, 400000, 100000, 478000]);
         assert.deepEqual(JSON.parse(stored.items_json)[0], { productId: simple.id, name: simple.name, quantity: 2, price: 200000, sku: 'SS-100' });
-        assert.equal(db.prepare('SELECT stock FROM products WHERE id = ?').get(simple.id).stock, 4, 'unpaid requests never reserve or decrement stock');
+        assert.equal(db.prepare('SELECT stock FROM products WHERE id = ?').get(simple.id).stock, 2, 'order submission deducts inventory once even when the request is replayed');
         const adminOrder = (await data(await request('/api/admin'))).snapshot.orders.find(order => order.id === checkoutReceipt.id);
         assert.deepEqual(adminOrder.checkout, details);
         await data(await request('/api/admin', { authenticated: false }), 401);
         assert.equal((await request('/api/checkout', { authenticated: false })).status, 405, 'no public order/customer lookup');
         assert.doesNotMatch(JSON.stringify(await data(await request('/api/catalog'))), /Existing customer|گیرنده آزمایشی|checkout_payload_hash|checkout_key_hash/);
         await data(await submit({ idempotencyKey: body.idempotencyKey, notes: 'Changed request' }), 409);
+
+        const competitors = await Promise.all([submit(), submit()]);
+        assert.deepEqual(competitors.map(response => response.status).sort(), [201, 409], 'only one competing order can consume the remaining units');
+        const winner = (await data(competitors.find(response => response.status === 201), 201)).order;
+        assert.equal(db.prepare('SELECT stock FROM products WHERE id = ?').get(simple.id).stock, 0);
+        await data(await request(`/api/admin/orders/${winner.id}`, { method: 'PATCH', body: { status: 'shipped' } }));
+        assert.equal(db.prepare('SELECT stock FROM products WHERE id = ?').get(simple.id).stock, 0, 'ordinary fulfilment changes do not deduct again');
+        await data(await request(`/api/admin/orders/${winner.id}`, { method: 'PATCH', body: { status: 'cancelled' } }));
+        await data(await request(`/api/admin/orders/${winner.id}`, { method: 'PATCH', body: { status: 'cancelled' } }));
+        assert.equal(db.prepare('SELECT stock FROM products WHERE id = ?').get(simple.id).stock, 2, 'repeated cancellation restores the exact ordered quantity once');
 
         // Retries recover the original receipt even when conditions have changed.
         await data(await request(`/api/admin/products/${simple.id}`, { method: 'PUT', body: { ...simple, stock: 0, price: 300000, salePrice: null } }));
@@ -942,7 +952,7 @@ test('database-backed admin, catalog, uploads, access control, and restart persi
         await data(await submit(), 409);
         await data(await request('/api/admin/settings', { method: 'PUT', body: originalSettings }));
         await data(await request('/api/admin/shipping', { method: 'PUT', body: { shippingMethods: methods } }));
-        await data(await request(`/api/admin/products/${simple.id}`, { method: 'PUT', body: simple }));
+        await data(await request(`/api/admin/products/${simple.id}`, { method: 'PUT', body: { ...simple, stock: 100 } }));
 
         const postpaid = (await data(await submit({ shippingMethodId: 'checkout-postpaid', expectedTotal: 400000 }), 201)).order;
         assert.equal(postpaid.shippingPostpaid, true);
@@ -954,7 +964,7 @@ test('database-backed admin, catalog, uploads, access control, and restart persi
         assert.equal(db.prepare('SELECT phone FROM customers WHERE phone = ?').get('09331234567').phone, '09331234567');
         const variant = (await data(await submit({ shippingMethodId: 'post-free', items: [{ id: variable.id, variantId: 'small', quantity: 3 }], expectedTotal: 540000 }), 201)).order;
         assert.deepEqual(JSON.parse(db.prepare('SELECT items_json FROM orders WHERE id = ?').get(variant.id).items_json)[0], { productId: variable.id, name: variable.name, quantity: 3, price: 180000, variantId: 'small', variantLabel: '۳۰ میلی‌لیتر', sku: 'SS-101' });
-        assert.equal(JSON.parse(db.prepare('SELECT variants_json FROM products WHERE id = ?').get(variable.id).variants_json)[0].stock, 3);
+        assert.equal(JSON.parse(db.prepare('SELECT variants_json FROM products WHERE id = ?').get(variable.id).variants_json)[0].stock, 0);
         db.prepare('UPDATE customers SET active = 0 WHERE id = ?').run('preserved-customer');
         await data(await submit(), 409);
         db.prepare('UPDATE customers SET active = 1 WHERE id = ?').run('preserved-customer');

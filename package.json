@@ -14,6 +14,7 @@
     "test:backend": "node --test tests/backend.test.mjs",
     "test:analytics": "node --test tests/admin-analytics.test.mjs",
     "test:customer-auth": "node --test tests/customer-auth.test.mjs",
+    "test:inventory": "node --test tests/inventory.test.mjs",
     "test:payment-receipts": "node --test tests/payment-receipts.test.mjs"
   },
   "engines": {

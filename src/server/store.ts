@@ -8,6 +8,7 @@ import type { CatalogTerm } from '@/lib/catalog-terms';
 import type { ProductReview, ProductReviewSummary } from '@/lib/products';
 import { isValidProductSlug, normalizeProductSlug } from '@/lib/product-slug';
 import type { TrashItem, TrashKind } from '@/lib/admin-trash';
+import { changeOrderStock, type StockAllocation } from './inventory';
 
 function productFromRow(row: Record<string, unknown>): AdminProduct {
   return {
@@ -197,7 +198,18 @@ export function purgeTrashItem(kind: TrashKind, id: string) {
   });
 }
 export function updateOrderStatus(id: string, status: string) {
-  if (!getDatabase().prepare('UPDATE orders SET status = ? WHERE id = ?').run(status, id).changes) throw new HttpError(404, 'سفارش پیدا نشد.');
+  transaction(() => {
+    const db = getDatabase();
+    const order = db.prepare('SELECT status, stock_allocations_json FROM orders WHERE id = ?').get(id);
+    if (!order) throw new HttpError(404, 'سفارش پیدا نشد.');
+    if (order.status === status) return;
+    // Only new orders have allocations. Legacy orders never removed stock.
+    if (order.stock_allocations_json !== null && (order.status === 'cancelled' || status === 'cancelled')) {
+      const allocations: StockAllocation[] = JSON.parse(String(order.stock_allocations_json));
+      changeOrderStock(allocations, status === 'cancelled' ? 1 : -1);
+    }
+    db.prepare('UPDATE orders SET status = ? WHERE id = ?').run(status, id);
+  });
 }
 export function updateCustomerActive(id: string, active: boolean) {
   transaction(() => {

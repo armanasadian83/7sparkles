@@ -254,6 +254,10 @@ const migrations = [{
     CREATE INDEX payment_receipts_created ON payment_receipts(created_at DESC, id DESC);
     CREATE INDEX payment_receipts_status_created ON payment_receipts(status, created_at DESC, id DESC);
   `,
+}, {
+  version: 10,
+  // NULL marks older orders, which never deducted stock. Never credit them on cancellation.
+  sql: `ALTER TABLE orders ADD COLUMN stock_allocations_json TEXT CHECK (stock_allocations_json IS NULL OR (json_valid(stock_allocations_json) AND json_type(stock_allocations_json) = 'array'));`,
 }];
 
 /** @returns {DatabaseSync} */

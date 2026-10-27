@@ -8,6 +8,7 @@ import type { AdminOrder } from '@/lib/admin-types';
 import type { CustomerSession } from '@/lib/customer-types';
 import { readCatalog } from './store';
 import { HttpError } from './http';
+import { changeOrderStock, getStockAllocations } from './inventory';
 
 function record(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new HttpError(422, 'اطلاعات سفارش معتبر نیست.');
@@ -71,16 +72,17 @@ function receipt(id: string, createdAt: string, checkout: CheckoutOrderDetails):
   };
 }
 
-/** Orders are unpaid requests for review. No gateway, inventory reservation, or payment is implied. */
+/** Checkout deducts tracked stock atomically; orders remain unpaid until payment is confirmed. */
 export function createCheckoutOrder(input: CheckoutInput, owner: CustomerSession | null = null): Omit<CheckoutReceipt, 'paymentReceiptToken'> {
   const db = getDatabase();
   const keyHash = createHash('sha256').update(input.idempotencyKey).digest('hex');
   const payloadHash = createHash('sha256').update(JSON.stringify({ ...input, idempotencyKey: undefined, ...(owner ? { customerId: owner.id } : {}) })).digest('hex');
   db.exec('BEGIN IMMEDIATE');
   try {
-    const existing = db.prepare('SELECT id, created_at, checkout_json, checkout_payload_hash FROM orders WHERE checkout_key_hash = ?').get(keyHash);
+    const existing = db.prepare('SELECT id, created_at, status, checkout_json, checkout_payload_hash FROM orders WHERE checkout_key_hash = ?').get(keyHash);
     if (existing) {
       if (existing.checkout_payload_hash !== payloadHash) throw new HttpError(409, 'این شناسه درخواست برای سفارش دیگری استفاده شده است. اطلاعات را بررسی و دوباره ارسال کنید.');
+      if (existing.status === 'cancelled') throw new HttpError(409, 'این سفارش لغو شده است. برای ثبت سفارش جدید، سبد خرید و موجودی را دوباره بررسی کنید.');
       const result = receipt(String(existing.id), String(existing.created_at), JSON.parse(String(existing.checkout_json)) as CheckoutOrderDetails);
       db.exec('COMMIT');
       return result;
@@ -127,8 +129,10 @@ export function createCheckoutOrder(input: CheckoutInput, owner: CustomerSession
       ...((line.variant?.sku || line.product.sku) ? { sku: line.variant?.sku || line.product.sku } : {}),
     }));
     const id = `SS-${randomUUID()}`;
-    db.prepare('INSERT INTO orders (id, user_id, created_at, status, items_json, checkout_json, checkout_key_hash, checkout_payload_hash) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-      .run(id, String(customer.id), now, 'processing', JSON.stringify(items), JSON.stringify(details), keyHash, payloadHash);
+    const stockAllocations = getStockAllocations(lines);
+    changeOrderStock(stockAllocations, -1);
+    db.prepare('INSERT INTO orders (id, user_id, created_at, status, items_json, checkout_json, checkout_key_hash, checkout_payload_hash, stock_allocations_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)')
+      .run(id, String(customer.id), now, 'processing', JSON.stringify(items), JSON.stringify(details), keyHash, payloadHash, JSON.stringify(stockAllocations));
     db.exec('COMMIT');
     return receipt(id, now, details);
   } catch (error) {

@@ -113,6 +113,8 @@ For upgrades, make a backup, deploy the new code, install with `npm ci --include
 
 ## Current application boundaries
 
+New checkouts deduct tracked product or selected-variant stock atomically when the unpaid order is saved. Cancellation returns only that order's deducted quantities once; reopening deducts them again and requires sufficient stock. Preorders and untracked quantities stay unchanged. The migration does not retroactively deduct stock for existing orders, so cancelling those older orders does not add stock. Inventory records persist with the database and survive restarts.
+
 The product/catalog backend, admin management APIs, stored settings, administrator authentication, customer sessions, checkout orders and payment-receipt reviews use the database. The shopper cart and favorites remain browser-local. Checkout saves unpaid orders, and manual receipt approval confirms payment; online payment processing and an SMS provider are not connected. Customer order history at `/myorders` requires a server-verified customer session. Local OTP codes are available only under `next dev`; production customer login is unavailable until SMS delivery is connected. Immediate guest receipt upload uses an order-scoped capability valid for 24 hours, retained only in page memory. Customer sessions never grant administrator access. The admin revenue report distinguishes booked order value from manually approved payment, using the order date for the reporting period.
 
 ## References
